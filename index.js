@@ -4,12 +4,12 @@ const divPokemons = document.getElementById('pokemons');
 const dropdownSpecies = document.getElementById('species');
 const dropdownPoketypes = document.getElementById('poketypes');
 const dropdownHabitats = document.getElementById('habitats');
-const listPokemons = [];
 
 function listPoketypes(list) {
   const poketypes = list.map((x) => x.name);
   return poketypes.join(', ');
 }
+
 function editDiv(element) {
   divPokemons.innerHTML += `
               <div id="div${element.pokemonId}" class="column is-3-desktop is-4-tablet is-12-mobile"> 
@@ -78,28 +78,54 @@ async function loadingHabitats() {
   }
 }
 
+function filterPokemon(data) {
+  const searchSpecies = dropdownSpecies.value;
+  const searchHabitat = dropdownHabitats.value;
+  const searchPoketypes = dropdownPoketypes.value;
+
+  let displayedPokemons = data;
+  divPokemons.innerHTML = '';
+  if (searchSpecies !== '') {
+    displayedPokemons = displayedPokemons.filter(
+      (element) => element.species.name === searchSpecies,
+    );
+  }
+  if (searchHabitat !== '') {
+    displayedPokemons = displayedPokemons.filter(
+      (element) => element.habitat.name === searchHabitat,
+    );
+  }
+  if (searchPoketypes !== '') {
+    const pokemonListGoodPocketype = [];
+    displayedPokemons.forEach((element) => {
+      element.poketypes.forEach((poketype) => {
+        if (poketype.name === searchPoketypes) {
+          pokemonListGoodPocketype.push(element);
+        }
+      });
+    });
+    displayedPokemons = pokemonListGoodPocketype;
+  }
+
+  displayedPokemons.forEach((element) => {
+    editDiv(element);
+  });
+}
+
 async function loadingPokemons() {
   const res = await fetch(`${pokemonapiURL}/pokemons`);
   if (res.ok) {
     const data = await res.json();
-    data.forEach((element) => {
-      listPokemons.push(element);
-      editDiv(element);
-    });
+    filterPokemon(data);
   } else {
     console.log('Error Pokemons not loaded');
   }
-}
-
-function filterPokemon() {
-  const searchSpecies = dropdownSpecies.value;
-  const searchPoketypes = dropdownPoketypes.value;
-  const searchHabitat = dropdownHabitats.value;
 }
 
 window.addEventListener('load', loadingSpecies);
 window.addEventListener('load', loadingPoketypes);
 window.addEventListener('load', loadingHabitats);
 window.addEventListener('load', loadingPokemons);
-
+document.getElementById('btnFiltrer')
+  .addEventListener('click', loadingPokemons);
 console.log(pokemonapiURL);
