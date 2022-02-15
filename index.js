@@ -1,4 +1,4 @@
-import { pokemonapiURL } from './commun.js';
+import { pokemonapiURL, editDiv } from './commun.js';
 
 const divPokemons = document.getElementById('pokemons');
 const dropdownSpecies = document.getElementById('species');
@@ -11,34 +11,6 @@ document.getElementById('afficherDeconnexion').addEventListener('click', () => {
   document.getElementById('afficherDeconnexion').classList.toggle('is-hidden');
   document.getElementById('favorites').classList.toggle('is-hidden');
 });
-
-function listPoketypes(list) {
-  const poketypes = list.map((x) => x.name);
-  return poketypes.join(', ');
-}
-
-function editDiv(element) {
-  divPokemons.innerHTML += `
-              <div id="div${element.pokemonId}" class="column is-3-desktop is-4-tablet is-12-mobile"> 
-                  <div  style="background-color: ${element.color}"  class="card large"> 
-                      <div class="card-image"> 
-                        <figure class="image is-square"> 
-                            <img src="${element.imgURL}" alt=${element.name}"> 
-                        </figure> 
-                      </div> 
-                        <div class="card-content">
-                            <div class="media"> 
-                                <div class="media-content">
-                                    <p class="title is-4 no-padding">${element.name}</p>
-                                    <p><b>Species:</b> ${element.species.name}</p>
-                                    <p><b>Habitat:</b> ${element.habitat.name}</p>
-                                    <p><b>Poketypes:</b> ${listPoketypes(element.poketypes)} </p>
-                                </div> 
-                            </div> 
-                        </div> 
-                    </div> 
-               </div>`;
-}
 
 async function loadingSpecies() {
   const res = await fetch(`${pokemonapiURL}/species`);
@@ -115,7 +87,7 @@ function filterPokemon(data) {
   }
 
   displayedPokemons.forEach((element) => {
-    editDiv(element);
+    editDiv(element, divPokemons);
   });
 }
 
@@ -142,7 +114,4 @@ if (sessionStorage.getItem('token')) {
   document.getElementById('favorites').classList.toggle('is-hidden');
 }
 
-module.exports = {
-  editDiv,
-};
 console.log(pokemonapiURL);
