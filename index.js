@@ -5,6 +5,13 @@ const dropdownSpecies = document.getElementById('species');
 const dropdownPoketypes = document.getElementById('poketypes');
 const dropdownHabitats = document.getElementById('habitats');
 
+document.getElementById('afficherDeconnexion').addEventListener('click', () => {
+  sessionStorage.removeItem('token');
+  document.getElementById('afficherConnexion').classList.toggle('is-hidden');
+  document.getElementById('afficherDeconnexion').classList.toggle('is-hidden');
+  document.getElementById('favorites').classList.toggle('is-hidden');
+});
+
 function listPoketypes(list) {
   const poketypes = list.map((x) => x.name);
   return poketypes.join(', ');
@@ -128,4 +135,14 @@ window.addEventListener('load', loadingHabitats);
 window.addEventListener('load', loadingPokemons);
 document.getElementById('btnFiltrer')
   .addEventListener('click', loadingPokemons);
+
+if (sessionStorage.getItem('token')) {
+  document.getElementById('afficherConnexion').classList.toggle('is-hidden');
+  document.getElementById('afficherDeconnexion').classList.toggle('is-hidden');
+  document.getElementById('favorites').classList.toggle('is-hidden');
+}
+
+module.exports = {
+  editDiv,
+};
 console.log(pokemonapiURL);

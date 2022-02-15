@@ -1,10 +1,14 @@
 import { pokemonapiURL } from './commun.js';
 
 const btnConnexion = document.getElementById('connexion');
-
+const btnAnnuler = document.getElementById('annuler');
+btnAnnuler.addEventListener('click', () => {
+  window.location.href = './index.html';
+});
 async function login() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
+  // e1730934@site.com; e1730934
   const body = {
     email,
     password,
@@ -17,8 +21,9 @@ async function login() {
     });
     if (resToken.ok) {
       const data = await resToken.json();
-      sessionStorage.setItem('data', data);
-      console.log(`Le jeton d'authentication: ${data.token}`);
+      sessionStorage.setItem('token', data.token);
+      console.log(`Le jeton d'authentication: ${sessionStorage.getItem('token')}`);
+      window.location.href = './favorites.html';
     } else {
       console.error('une erreur s\'est produite');
     }
@@ -28,5 +33,11 @@ async function login() {
 }
 
 btnConnexion.addEventListener('click', login);
+document.getElementById('password').addEventListener('keyup', (event) => {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    btnConnexion.click();
+  }
+});
 
 console.log(pokemonapiURL);
