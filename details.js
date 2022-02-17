@@ -16,17 +16,17 @@ async function isFav() {
 }
 
 if (sessionStorage.getItem('token')) {
-  document.getElementById('favorites').classList.toggle('is-hidden');
+  document.getElementById('favorites').classList.remove('is-hidden');
   const isFavorite = await isFav();
   console.log(isFavorite)
   if (isFavorite === true) {
-    document.getElementById('supprimerFavoris').classList.toggle('is-hidden');
+    document.getElementById('supprimerFavoris').classList.remove('is-hidden');
 
   } else {
-    document.getElementById('ajouterFavoris').classList.toggle('is-hidden');
+    document.getElementById('ajouterFavoris').classList.remove('is-hidden');
   }
 } else {
-  document.getElementById('afficherDeconnexion').classList.toggle('is-hidden');
+  document.getElementById('afficherDeconnexion').classList.add('is-hidden');
 }
 
 async function loadPokeInfo() {
@@ -55,21 +55,21 @@ async function loadPokeInfo() {
       } else {
         document.querySelector('#app > div > ul > li:nth-child(16)')
           .classList
-          .toggle('is-hidden');
+          .add('is-hidden');
         document.querySelector('#app > div > ul > li:nth-child(17)')
           .classList
-          .toggle('is-hidden');
+          .add('is-hidden');
       }
     } else {
       document.querySelector('#app > div > ul > li:nth-child(14)')
         .classList
-        .toggle('is-hidden');
+        .add('is-hidden');
       document.querySelector('#app > div > ul > li:nth-child(15)')
         .classList
-        .toggle('is-hidden');
+        .add('is-hidden');
       document.querySelector('#app > div > ul > li:nth-child(16)')
         .classList
-        .toggle('is-hidden');
+        .add('is-hidden');
     }
   } else {
     console.log('Error Species not loaded');
@@ -79,8 +79,8 @@ async function loadPokeInfo() {
 loadPokeInfo();
 document.getElementById('afficherDeconnexion').addEventListener('click', () => {
   sessionStorage.removeItem('token');
-  document.getElementById('afficherDeconnexion').classList.toggle('is-hidden');
-  document.getElementById('favorites').classList.toggle('is-hidden');
+  document.getElementById('afficherDeconnexion').classList.add('is-hidden');
+  document.getElementById('favorites').classList.add('is-hidden');
   document.getElementById('ajouterFavoris').classList.add('is-hidden')
   document.getElementById('supprimerFavoris').classList.add('is-hidden')
 });
