@@ -4,13 +4,14 @@ function listPoketypes(list) {
   const poketypes = list.map((x) => x.name);
   return poketypes.join(', ');
 }
-function editDiv(element, divPokemons) {
+
+function afficherPokemons(element, divPokemons) {
   divPokemons.innerHTML += `
               <div id="div${element.pokemonId}" class="column is-3-desktop is-4-tablet is-12-mobile"> 
                   <div  style="background-color: ${element.color}"  class="card large"> 
                       <div class="card-image"> 
                         <figure class="image is-square"> 
-                            <img src="${element.imgURL}" alt=${element.name}"> 
+                            <img src="${element.imgURL}" alt=${element.name}> 
                         </figure> 
                       </div> 
                         <div class="card-content">
@@ -27,4 +28,4 @@ function editDiv(element, divPokemons) {
                </div>`;
 }
 
-export { pokemonapiURL, editDiv };
+export { pokemonapiURL, afficherPokemons };
