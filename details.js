@@ -21,13 +21,7 @@ if (sessionStorage.getItem('token')) {
   console.log(isFavorite)
   if (isFavorite === true) {
     document.getElementById('supprimerFavoris').classList.toggle('is-hidden');
-    document.getElementById('afficherDeconnexion').addEventListener('click', () => {
-      sessionStorage.removeItem('token');
-      document.getElementById('afficherDeconnexion').classList.toggle('is-hidden');
-      document.getElementById('favorites').classList.toggle('is-hidden');
-      document.getElementById('ajouterFavoris').classList.add('is-hidden')
-      document.getElementById('supprimerFavoris').classList.add('is-hidden')
-    });
+
   } else {
     document.getElementById('ajouterFavoris').classList.toggle('is-hidden');
   }
@@ -83,4 +77,34 @@ async function loadPokeInfo() {
 }
 
 loadPokeInfo();
+document.getElementById('afficherDeconnexion').addEventListener('click', () => {
+  sessionStorage.removeItem('token');
+  document.getElementById('afficherDeconnexion').classList.toggle('is-hidden');
+  document.getElementById('favorites').classList.toggle('is-hidden');
+  document.getElementById('ajouterFavoris').classList.add('is-hidden')
+  document.getElementById('supprimerFavoris').classList.add('is-hidden')
+});
+document.getElementById('ajouterFavoris').addEventListener('click',async () => {
+  const bearerToken = `bearer ${sessionStorage.getItem('token')}`;
+  const res = await fetch(`${pokemonapiURL}/favorite?pokemonId=${urlParams.get('pokemonId')}`, {
+    method: 'POST',
+    headers: { authorization: bearerToken },
+  });
+  if (res.ok) {
+    document.getElementById('ajouterFavoris').classList.toggle('is-hidden');
+    document.getElementById('supprimerFavoris').classList.toggle('is-hidden');
+  }
+})
+
+document.getElementById('supprimerFavoris').addEventListener('click',async () => {
+  const bearerToken = `bearer ${sessionStorage.getItem('token')}`;
+  const res = await fetch(`${pokemonapiURL}/favorite?pokemonId=${urlParams.get('pokemonId')}`, {
+    method: 'DELETE',
+    headers: { authorization: bearerToken },
+  });
+  if (res.ok) {
+    document.getElementById('supprimerFavoris').classList.toggle('is-hidden');
+    document.getElementById('ajouterFavoris').classList.toggle('is-hidden');
+  }
+})
 console.log(pokemonapiURL);
