@@ -28,4 +28,12 @@ function afficherPokemons(element, divPokemons) {
                </div>`;
 }
 
-export { pokemonapiURL, afficherPokemons };
+function redirectDetails(data) {
+  data.forEach((element) => {
+    document.getElementById(`div${element.pokemonId}`).addEventListener('click', () => {
+      window.location.href = `./details.html?pokemonId=${element.pokemonId}`;
+    });
+  });
+}
+
+export { pokemonapiURL, afficherPokemons, redirectDetails };

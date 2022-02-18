@@ -1,4 +1,4 @@
-import { pokemonapiURL, afficherPokemons } from './commun.js';
+import { pokemonapiURL, afficherPokemons, redirectDetails } from './commun.js';
 
 const divPokemons = document.getElementById('pokemons');
 const dropdownSpecies = document.getElementById('species');
@@ -89,11 +89,7 @@ function filterPokemon(data) {
   displayedPokemons.forEach((element) => {
     afficherPokemons(element, divPokemons);
   });
-  displayedPokemons.forEach((element) => {
-    document.getElementById(`div${element.pokemonId}`).addEventListener('click', () => {
-      window.location.href = `./details.html?pokemonId=${element.pokemonId}`;
-    });
-  });
+  redirectDetails(displayedPokemons);
 }
 
 async function loadingPokemons() {

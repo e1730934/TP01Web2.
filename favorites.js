@@ -1,4 +1,4 @@
-import { afficherPokemons, pokemonapiURL } from './commun.js';
+import { afficherPokemons, pokemonapiURL, redirectDetails } from './commun.js';
 
 if ((sessionStorage.getItem('token')) === null) {
   window.location.href = './index.html';
@@ -22,11 +22,7 @@ async function loadingSpecies() {
     data.forEach((element) => {
       afficherPokemons(element, divPokemons);
     });
-    data.forEach((element) => {
-      document.getElementById(`div${element.pokemonId}`).addEventListener('click', () => {
-        window.location.href = `./details.html?pokemonId=${element.pokemonId}`;
-      });
-    });
+    redirectDetails(data);
   }
 }
 
