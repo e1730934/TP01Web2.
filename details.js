@@ -4,31 +4,27 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 async function isFav() {
-  const bearerToken = `bearer ${sessionStorage.getItem('token')}`;
-  const res = await fetch(`${pokemonapiURL}/favorite?pokemonId=${urlParams.get('pokemonId')}`, {
-    method: 'GET',
-    headers: { authorization: bearerToken },
-  });
-  if (res.ok) {
-    const data = await res.json();
-    return data.isFavorite
-  }
-}
-
-if (sessionStorage.getItem('token')) {
-  document.getElementById('favorites').classList.remove('is-hidden');
-  const isFavorite = await isFav();
-  console.log(isFavorite)
-  if (isFavorite === true) {
-    document.getElementById('supprimerFavoris').classList.remove('is-hidden');
-
+  if (sessionStorage.getItem('token')) {
+    const bearerToken = `bearer ${sessionStorage.getItem('token')}`;
+    const res = await fetch(`${pokemonapiURL}/favorite?pokemonId=${urlParams.get('pokemonId')}`, {
+      method: 'GET',
+      headers: { authorization: bearerToken },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      document.getElementById('favorites').classList.remove('is-hidden');
+      const { isFavorite } = data;
+      if (isFavorite === true) {
+        document.getElementById('supprimerFavoris').classList.remove('is-hidden');
+      } else {
+        document.getElementById('ajouterFavoris').classList.remove('is-hidden');
+      }
+    }
   } else {
-    document.getElementById('ajouterFavoris').classList.remove('is-hidden');
+    document.getElementById('afficherDeconnexion').classList.add('is-hidden');
   }
-} else {
-  document.getElementById('afficherDeconnexion').classList.add('is-hidden');
 }
-
+isFav();
 async function loadPokeInfo() {
   const res = await fetch(`${pokemonapiURL}/pokemon?pokemonId=${urlParams.get('pokemonId')}`);
   if (res.ok) {
@@ -81,10 +77,10 @@ document.getElementById('afficherDeconnexion').addEventListener('click', () => {
   sessionStorage.removeItem('token');
   document.getElementById('afficherDeconnexion').classList.add('is-hidden');
   document.getElementById('favorites').classList.add('is-hidden');
-  document.getElementById('ajouterFavoris').classList.add('is-hidden')
-  document.getElementById('supprimerFavoris').classList.add('is-hidden')
+  document.getElementById('ajouterFavoris').classList.add('is-hidden');
+  document.getElementById('supprimerFavoris').classList.add('is-hidden');
 });
-document.getElementById('ajouterFavoris').addEventListener('click',async () => {
+document.getElementById('ajouterFavoris').addEventListener('click', async () => {
   const bearerToken = `bearer ${sessionStorage.getItem('token')}`;
   const res = await fetch(`${pokemonapiURL}/favorite?pokemonId=${urlParams.get('pokemonId')}`, {
     method: 'POST',
@@ -94,9 +90,9 @@ document.getElementById('ajouterFavoris').addEventListener('click',async () => {
     document.getElementById('ajouterFavoris').classList.toggle('is-hidden');
     document.getElementById('supprimerFavoris').classList.toggle('is-hidden');
   }
-})
+});
 
-document.getElementById('supprimerFavoris').addEventListener('click',async () => {
+document.getElementById('supprimerFavoris').addEventListener('click', async () => {
   const bearerToken = `bearer ${sessionStorage.getItem('token')}`;
   const res = await fetch(`${pokemonapiURL}/favorite?pokemonId=${urlParams.get('pokemonId')}`, {
     method: 'DELETE',
@@ -106,5 +102,5 @@ document.getElementById('supprimerFavoris').addEventListener('click',async () =>
     document.getElementById('supprimerFavoris').classList.toggle('is-hidden');
     document.getElementById('ajouterFavoris').classList.toggle('is-hidden');
   }
-})
+});
 console.log(pokemonapiURL);
